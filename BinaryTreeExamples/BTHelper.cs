@@ -140,14 +140,7 @@ namespace BinaryTreeExamples
         /// <typeparam name="T"></typeparam>
         /// <param name="root"></param>
         /// <returns>אמת אם עלה ושקר אחרת</returns>
-        public static bool IsLeaf<T>(BinNode<T> root)
-        {
-            //עץ ריק הוא לא עלה
-            if (root == null)
-                return false;
-            //לעלה אין ילד שמאלי ואין ילד ימני. אם אין יוחזר אמת. אחרת יוחזר שקר
-            return !root.HasLeft() && !root.HasRight();
-        }
+      
         #endregion
 
 
@@ -354,20 +347,7 @@ namespace BinaryTreeExamples
         /// <typeparam name="T"></typeparam>
         /// <param name="root"></param>
         /// <returns></returns>
-        public static int[] BinTreeWidthVersion2<T>(BinNode<T> root)
-        {
-            //מערך בגודל גובה העץ + 1 )
-            //כי יש 1 יותר רמות מגובה העץ
-            int[] treeLevels = new int[BinTreeHight(root) + 1];
-            int currentLevel = 0;
-            //המערך יכיל בסוף הפעולה בכל רמה את כמות הצמתים שלה
-            CountNodesInLevel(root, treeLevels, currentLevel);
-            //יוחזר מערך המכיל את הרמה המקסימלית והערך המקסימלי באותה רמה
-            return FindMax(treeLevels);
-
-
-        }
-
+      
 
         #region פעולות עזר
         /// <summary>
