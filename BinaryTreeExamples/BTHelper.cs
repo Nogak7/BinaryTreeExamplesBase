@@ -204,8 +204,25 @@ namespace BinaryTreeExamples
         /// </summary>
         /// <param name="root"></param>
         public static void UpdateCharTree(BinNode<char> root)
+        {
+
+            if(root!=null)
             {
-           
+                char ch=root.GetValue();
+                //האם אותיות גדולות?
+                if (ch>='a'&&ch<='z')
+                //convert the char to range of 0-25  letters (ch-'a')==>add 1===>make sure it is still between 0-25 (%26)===> convert it to a char (+'a')==>covert back to char (char)(<result>)
+                    ch=(char)(((ch-'a')+1)%26 +'a');
+                //convert the char to range of 0-25  letters (ch-'A')==>add 1===>make sure it is still between 0-25 (%26)===> convert it to a char (+'A')==>covert back to char (char)(<result>)
+                if (ch >='A'&&ch<='Z')
+                    ch = (char)(((ch - 'A') + 1) % 26+'A');
+                //עדכן את הערך החדש
+                root.SetValue(ch);
+                //עשו זאת עבור תת עץ שמאל ותת עץ ימין
+                UpdateCharTree(root.GetLeft());
+                UpdateCharTree(root.GetRight());
+            }
+            
             
         }
 
