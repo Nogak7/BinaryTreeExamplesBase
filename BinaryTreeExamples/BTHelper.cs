@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using System.Text;
 using DataStructureCore;
 
@@ -80,7 +80,7 @@ namespace BinaryTreeExamples
         /// <param name="root"></param>
         public static void PrintPreOrder<T>(BinNode<T> root)
         {
-           if(root != null)
+            if (root != null)
             {
                 Console.WriteLine(root.GetValue());
                 PrintPreOrder(root.GetLeft());
@@ -140,7 +140,13 @@ namespace BinaryTreeExamples
         /// <typeparam name="T"></typeparam>
         /// <param name="root"></param>
         /// <returns>אמת אם עלה ושקר אחרת</returns>
-      
+   
+        public static bool IsLeaf<T>(BinNode<T> node)
+        {
+            if (node == null)
+                return false;
+            return !node.HasLeft() && !node.HasRight();
+        }
         #endregion
 
 
@@ -157,23 +163,23 @@ namespace BinaryTreeExamples
         /// <returns></returns>
         public static int CountTreeNodes<T>(BinNode<T> root)
         {
-            if(root== null) 
-            return 0;
-            return 1+ CountTreeNodes(root.GetLeft())+CountTreeNodes(root.GetRight());
+            if (root == null)
+                return 0;
+            return 1 + CountTreeNodes(root.GetLeft()) + CountTreeNodes(root.GetRight());
         }
         #endregion
 
         #region האם ערך קיים בעץ
         public static bool IsExistsInTree<T>(BinNode<T> root, T val)
         {
-            if(root==null)
-            return false;
+            if (root == null)
+                return false;
 
             //if (root.GetValue().Equals(val))
             //    return true;
             //return IsExistsInTree(root.GetLeft(), val) || IsExistsInTree(root.GetRight(), val);
             //או בשורש או בצד שמאל או בצד ימין
-            return (root.GetValue().Equals(val))|| IsExistsInTree(root.GetLeft(), val) || IsExistsInTree(root.GetRight(), val);
+            return (root.GetValue().Equals(val)) || IsExistsInTree(root.GetLeft(), val) || IsExistsInTree(root.GetRight(), val);
 
         }
         #endregion
@@ -185,10 +191,10 @@ namespace BinaryTreeExamples
         /// <returns></returns>
         public static bool EachHasTwoChilds<T>(BinNode<T> root)
         {
-            if(root == null)
-            return true;
+            if (root == null)
+                return true;
             //אם יש ילד יחיד שמאלי
-            if(root.HasLeft()&&!root.HasRight())
+            if (root.HasLeft() && !root.HasRight())
                 return false;
             //אם יש ילד יחיד ימני
             if (root.HasRight() && !root.HasLeft())
@@ -196,7 +202,7 @@ namespace BinaryTreeExamples
             //אם הצומת הנוכחי מקיים את התנאים נבדוק שכל תת עץ שמאל מקיים וגם תת עץ ימין
             return EachHasTwoChilds(root.GetLeft()) && EachHasTwoChilds(root.GetRight());
 
-         
+
         }
 
         /// <summary>
@@ -206,24 +212,24 @@ namespace BinaryTreeExamples
         public static void UpdateCharTree(BinNode<char> root)
         {
 
-            if(root!=null)
+            if (root != null)
             {
-                char ch=root.GetValue();
+                char ch = root.GetValue();
                 //האם אותיות גדולות?
-                if (ch>='a'&&ch<='z')
-                //convert the char to range of 0-25  letters (ch-'a')==>add 1===>make sure it is still between 0-25 (%26)===> convert it to a char (+'a')==>covert back to char (char)(<result>)
-                    ch=(char)(((ch-'a')+1)%26 +'a');
+                if (ch >= 'a' && ch <= 'z')
+                    //convert the char to range of 0-25  letters (ch-'a')==>add 1===>make sure it is still between 0-25 (%26)===> convert it to a char (+'a')==>covert back to char (char)(<result>)
+                    ch = (char)(((ch - 'a') + 1) % 26 + 'a');
                 //convert the char to range of 0-25  letters (ch-'A')==>add 1===>make sure it is still between 0-25 (%26)===> convert it to a char (+'A')==>covert back to char (char)(<result>)
-                if (ch >='A'&&ch<='Z')
-                    ch = (char)(((ch - 'A') + 1) % 26+'A');
+                if (ch >= 'A' && ch <= 'Z')
+                    ch = (char)(((ch - 'A') + 1) % 26 + 'A');
                 //עדכן את הערך החדש
                 root.SetValue(ch);
                 //עשו זאת עבור תת עץ שמאל ותת עץ ימין
                 UpdateCharTree(root.GetLeft());
                 UpdateCharTree(root.GetRight());
             }
-            
-            
+
+
         }
 
         /// <summary>
@@ -236,7 +242,7 @@ namespace BinaryTreeExamples
         public static int CountLeaves<T>(BinNode<T> root)
         {
             return 0;
-                
+
         }
         /// <summary>
         /// שאלה 12
@@ -262,11 +268,125 @@ namespace BinaryTreeExamples
         /// <returns></returns>
         public static int BinTreeHight<T>(BinNode<T> root)
         {
+            if(root==null)
+            return -1;
+            if (!root.HasRight() && !root.HasLeft())
+                return 0;
 
-            return 0;
+            return 1+Math.Max(BinTreeHight(root.GetLeft()),BinTreeHight(root.GetRight()));  
         }
         #endregion
 
+        #region שאלה 24
+        public static bool IsSingleParent<T>(BinNode<T> node)
+        {
+            if (node == null)
+                return false;
+            return (node.HasLeft() && !node.HasRight()) || node.HasRight() && !node.HasLeft();
+        }
+
+
+        public static int CountSingleParents<T>(BinNode<T> root)
+        {
+            if (root == null)
+                return 0;
+            if (IsSingleParent(root))
+                return 1 + CountSingleParents(root.GetLeft()) + CountSingleParents(root.GetRight());
+            return CountSingleParents(root.GetLeft()) + CountSingleParents(root.GetRight());
+        }
+
+        public static int CountSingleChild<T>(BinNode<T> root)
+            {
+            if (root == null)
+                return 0;
+            #region אופציה נוספת
+            //if(IsSingleParent(root)&&(IsSingleParent(root.GetLeft())||IsSingleParent(root.GetRight()))
+            //    return 1+ CountSingleChild(root.GetLeft()) + CountSingleChild(root.GetRight());
+            //return CountSingleChild(root.GetLeft()) + CountSingleChild(root.GetRight());
+            #endregion
+
+
+            if ((IsSingleParent(root)&&IsSingleParent(root.GetLeft()) || IsSingleParent(root) && IsSingleParent(root.GetRight())))
+                  return 1+ CountSingleChild(root.GetLeft())+CountSingleChild(root.GetRight());
+             return CountSingleChild(root.GetLeft())+ CountSingleChild(root.GetRight());
+
+
+
+
+            }
+        #region בגרות 2016
+
+        public static bool UpPath(BinNode<int> root)
+        {
+            //אם הגענו לnull
+            //לא עץ מספרי
+            if (root == null)
+                return false;
+            if (IsLeaf(root))
+                return true;
+            
+            bool left=false;
+            bool right=false;
+            //ילד שמאל גדול יותר
+            if(root.HasLeft())
+            {
+                if(root.GetValue()<root.GetLeft().GetValue())
+                    left = true;
+                   
+            }
+            //ילד ימין יותר גדול
+            if(root.HasRight())
+                if (root.GetValue() < root.GetRight().GetValue())
+                    right = true;
+            if(left||right)
+                return UpPath(root.GetLeft())||UpPath(root.GetRight());
+           
+            return false;
+        }
+
+        #endregion
+        #endregion
+        #region סריקת רוחב
+        public static void BreadthSearch<T>(BinNode<T> root)
+        {
+            Queue<BinNode<T>> queue = new Queue<BinNode<T>>();
+            BinNode<T> node;
+            queue.Insert(root);
+            while(!queue.IsEmpty())
+            {
+                node = queue.Remove();
+                Console.WriteLine(node.GetValue());
+                if (node.HasLeft())
+                    queue.Insert(node.GetLeft());
+                if(node.HasRight())
+                    queue.Insert(node.GetRight());
+
+            }
+        }
+        #endregion
+
+        public static int MaxBreadthSearch(BinNode<int> root)
+        {
+            int max = root.GetValue();
+            Queue<BinNode<int>> queue = new Queue<BinNode<int>>();
+            BinNode<int> node;
+            queue.Insert(root);
+            while (!queue.IsEmpty())
+            {
+                node = queue.Remove();
+                //Console.WriteLine(node.GetValue());
+                if (node.GetValue() > max)
+                    max = node.GetValue();
+                if (node.HasLeft())
+                    queue.Insert(node.GetLeft());
+                if (node.HasRight())
+                    queue.Insert(node.GetRight());
+
+            }
+            return max;
+        }
+
+        
         #region הדפסת רמה בעץ
 
         #region פעולת המעטפת
