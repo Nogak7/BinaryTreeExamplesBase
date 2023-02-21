@@ -1,9 +1,83 @@
 ﻿using System;
+using System.Xml.Linq;
 using DataStructureCore;
 namespace BinaryTreeExamples
 {
     class Program
     {
+        public static void PrintLevel(BinNode<int> root, int level)
+        {
+            Queue<BinNode<int>> nodes = new Queue<BinNode<int>>();
+            Queue<int> levels = new Queue<int>();
+            nodes.Insert(root);
+            int lev = 0;
+            BinNode<int> node;
+            levels.Insert(lev);
+            while (!nodes.IsEmpty() && level != levels.Head())
+            {
+                node = nodes.Remove();
+                lev = levels.Remove();
+
+                if (node.HasLeft())
+                {
+                    nodes.Insert(node.GetLeft());
+                    levels.Insert(lev + 1);
+                }
+                if (node.HasRight())
+                {
+                    nodes.Insert(node.GetRight());
+                    levels.Insert(lev + 1);
+                }
+            }
+            while (!nodes.IsEmpty())
+            {
+                Console.WriteLine(nodes.Remove().GetValue());
+            }
+
+        }
+        public static int Width<T>(BinNode<T> root) // צריך לתקן
+        {
+            Queue<BinNode<T>> nodes = new Queue<BinNode<T>>();
+            Queue<int> levels = new Queue<int>();
+            nodes.Insert(root);
+            int lev = 0;
+            BinNode<T> node;
+            levels.Insert(lev);
+            int MaxWidth = 1;
+            int templev = 0;
+            int Maxcount = 1;
+            int tempcount =0;
+            while(!nodes.IsEmpty()&& levels.Head()==templev)
+            {
+               
+                    node = nodes.Remove();
+                    lev = levels.Remove();
+
+                    if (node.HasLeft())
+                    {
+                        nodes.Insert(node.GetLeft());
+                        levels.Insert(lev + 1);
+                    }
+                    if (node.HasRight())
+                    {
+                        nodes.Insert(node.GetRight());
+                        levels.Insert(lev + 1);
+                    }
+                    tempcount++;
+                }
+                if (tempcount > Maxcount)
+                {
+                    Maxcount = tempcount;
+                    MaxWidth = templev;
+                } 
+                templev++;
+                
+            
+            return  MaxWidth;
+
+        }
+
+
        
         static void Main(string[] args)
         {
@@ -18,6 +92,8 @@ namespace BinaryTreeExamples
 
 
             BinNode<int> root2 = BTHelper.CreateTree();
+            Console.WriteLine(Program.Width(root2)); 
+
           //  Console.WriteLine("InOrder:");
           //  BTHelper.PrintInOrder(root);
           //  Console.WriteLine();
